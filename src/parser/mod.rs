@@ -831,7 +831,8 @@ impl Parser {
                 Ok(Expr::FloatLiteral(value, 0..0))
             }
             TokenKind::StringLiteral => {
-                let value = token.text[1..token.text.len()-1].to_string();
+                let raw = &token.text[1..token.text.len()-1];
+                let value = self.unescape_string(raw)?;
                 self.advance();
                 Ok(Expr::StringLiteral(value, 0..0))
             }
@@ -879,6 +880,31 @@ impl Parser {
             text.parse::<i64>()
                 .map_err(|e| format!("Invalid decimal integer: {}", e))
         }
+    }
+    
+    fn unescape_string(&self, s: &str) -> Result<String, String> {
+        let mut result = String::new();
+        let mut chars = s.chars();
+        
+        while let Some(ch) = chars.next() {
+            if ch == '\\' {
+                match chars.next() {
+                    Some('n') => result.push('\n'),
+                    Some('r') => result.push('\r'),
+                    Some('t') => result.push('\t'),
+                    Some('\\') => result.push('\\'),
+                    Some('\'') => result.push('\''),
+                    Some('"') => result.push('"'),
+                    Some('0') => result.push('\0'),
+                    Some(c) => return Err(format!("Invalid escape sequence: \\{}", c)),
+                    None => return Err("Unterminated escape sequence".to_string()),
+                }
+            } else {
+                result.push(ch);
+            }
+        }
+        
+        Ok(result)
     }
 }
 
