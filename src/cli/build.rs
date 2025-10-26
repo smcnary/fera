@@ -111,12 +111,55 @@ pub fn execute(
     target_machine.write_to_file(codegen.get_module(), FileType::Object, &obj_path)
         .map_err(|e| anyhow::anyhow!("Failed to write object file: {}", e))?;
     
+    // Compile stdlib
+    println!("  Compiling standard library...");
+    let stdlib_path = std::env::current_dir()?.join("stdlib/core");
+    
+    // List of stdlib source files
+    let stdlib_sources = vec!["print.c", "math.c", "string.c"];
+    let mut stdlib_obj_paths = Vec::new();
+    
+    for source in &stdlib_sources {
+        let source_path = stdlib_path.join(source);
+        if !source_path.exists() {
+            continue;
+        }
+        
+        let mut obj_path = output_path.clone();
+        let obj_name = format!("{}.o", source.trim_end_matches(".c"));
+        obj_path.set_file_name(&obj_name);
+        
+        let mut compile_stdlib = std::process::Command::new("cc");
+        compile_stdlib.arg("-c");
+        compile_stdlib.arg(&source_path);
+        compile_stdlib.arg("-o");
+        compile_stdlib.arg(&obj_path);
+        compile_stdlib.arg("-I");
+        compile_stdlib.arg(&stdlib_path);
+        
+        let status = compile_stdlib.status()?;
+        if !status.success() {
+            anyhow::bail!("Failed to compile standard library: {}", source);
+        }
+        
+        stdlib_obj_paths.push(obj_path);
+    }
+    
     // Link
     println!("  Linking...");
     let mut link_cmd = std::process::Command::new("cc");
     link_cmd.arg(&obj_path);
+    
+    // Link all stdlib object files
+    for stdlib_obj in &stdlib_obj_paths {
+        link_cmd.arg(stdlib_obj);
+    }
+    
     link_cmd.arg("-o");
     link_cmd.arg(&output_path);
+    
+    // Link system libraries (math library needed for math functions)
+    link_cmd.arg("-lm");
     
     for lib in &link {
         link_cmd.arg(format!("-l{}", lib));
@@ -128,8 +171,11 @@ pub fn execute(
         anyhow::bail!("Linking failed");
     }
     
-    // Clean up object file
+    // Clean up object files
     fs::remove_file(&obj_path).ok();
+    for stdlib_obj in &stdlib_obj_paths {
+        fs::remove_file(stdlib_obj).ok();
+    }
     
     println!("✅ Build complete: {}", output_path.display());
     
