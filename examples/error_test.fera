@@ -1,0 +1,12 @@
+// Test program with deliberate errors to show improved error messages
+
+export i32 main() {
+    // This should cause a type mismatch error
+    i32 x = "hello";
+    
+    // This should cause an unknown function error
+    unknown_function(42);
+    
+    return 0;
+}
+

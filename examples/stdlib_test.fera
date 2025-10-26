@@ -1,0 +1,40 @@
+// Test program for stdlib functions
+
+export i32 main() {
+    // Test print functions
+    print("Testing stdlib functions:\n");
+    
+    // Test integer math
+    print("Math tests:\n");
+    print("  max(10, 20) = ");
+    println_i32(max_i32(10, 20));
+    
+    print("  min(10, 20) = ");
+    println_i32(min_i32(10, 20));
+    
+    print("  abs(-42) = ");
+    println_i32(abs_i32(-42));
+    
+    print("  gcd(48, 18) = ");
+    println_i32(gcd_i32(48, 18));
+    
+    // Test float math
+    print("\nFloat tests:\n");
+    print("  sqrt(16.0) = ");
+    println_f64(sqrt_f64(16.0));
+    
+    print("  pow(2.0, 3.0) = ");
+    println_f64(pow_f64(2.0, 3.0));
+    
+    // Test boolean print
+    print("\nBoolean test:\n");
+    print("  true = ");
+    println_bool(1);
+    print("  false = ");
+    println_bool(0);
+    
+    println("\nAll tests complete!");
+    
+    return 0;
+}
+

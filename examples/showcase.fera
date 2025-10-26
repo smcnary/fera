@@ -1,0 +1,98 @@
+// Showcase of Fera language features and standard library
+
+// Test integer math
+i32 test_math() {
+    i32 a = 10;
+    i32 b = 20;
+    
+    print("Integer math:\n");
+    print("  a = 10, b = 20\n");
+    print("  a + b = ");
+    println_i32(a + b);
+    
+    print("  max(a, b) = ");
+    println_i32(max_i32(a, b));
+    
+    print("  min(a, b) = ");
+    println_i32(min_i32(a, b));
+    
+    print("  abs(-42) = ");
+    println_i32(abs_i32(-42));
+    
+    print("  gcd(48, 18) = ");
+    println_i32(gcd_i32(48, 18));
+    
+    return 0;
+}
+
+// Test float math
+i32 test_float_math() {
+    print("\nFloating point math:\n");
+    
+    print("  sqrt(25.0) = ");
+    println_f64(sqrt_f64(25.0));
+    
+    print("  pow(3.0, 2.0) = ");
+    println_f64(pow_f64(3.0, 2.0));
+    
+    print("  sin(0.0) = ");
+    println_f64(sin_f64(0.0));
+    
+    print("  cos(0.0) = ");
+    println_f64(cos_f64(0.0));
+    
+    return 0;
+}
+
+// Test control flow
+i32 test_control_flow() {
+    print("\nControl flow:\n");
+    
+    // If statement
+    i32 x = 10;
+    if (x > 5) {
+        print("  x is greater than 5\n");
+    }
+    
+    // While loop
+    print("  Counting: ");
+    i32 i = 0;
+    while (i < 5) {
+        print_i32(i);
+        print(" ");
+        i = i + 1;
+    }
+    print("\n");
+    
+    return 0;
+}
+
+// Recursive function (fibonacci)
+i32 fib(i32 n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+i32 test_recursion() {
+    print("\nRecursion (Fibonacci):\n");
+    print("  fib(10) = ");
+    println_i32(fib(10));
+    return 0;
+}
+
+// Main entry point
+export i32 main() {
+    println("=== Fera Language Showcase ===");
+    
+    test_math();
+    test_float_math();
+    test_control_flow();
+    test_recursion();
+    
+    println("\n=== All tests passed! ===");
+    
+    return 0;
+}
+
