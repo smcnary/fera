@@ -94,7 +94,7 @@ pub enum Linkage {
     Internal,  // static
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Type {
     Void,
     Bool,

@@ -24,13 +24,30 @@ impl<'source> Lexer<'source> {
         while let Some(kind) = self.lexer.next() {
             let span = self.lexer.span();
             let text = &self.source[span.clone()];
+            let kind = kind.unwrap_or(TokenKind::Error);
+            
+            // Skip comments and preprocessor directives
+            match kind {
+                TokenKind::LineComment | TokenKind::BlockComment | TokenKind::PreprocessorDirective => {
+                    continue;
+                }
+                _ => {}
+            }
             
             tokens.push(Token {
-                kind: kind.unwrap_or(TokenKind::Error),
+                kind,
                 text: text.to_string(),
                 span: span.start..span.end,
             });
         }
+        
+        // Add EOF token
+        let eof_pos = self.source.len();
+        tokens.push(Token {
+            kind: TokenKind::Eof,
+            text: String::new(),
+            span: eof_pos..eof_pos,
+        });
         
         tokens
     }
