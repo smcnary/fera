@@ -5,6 +5,7 @@ mod types;
 mod hir;
 mod codegen;
 mod cli;
+mod error;
 
 use anyhow::Result;
 use clap::{Parser, Subcommand};
