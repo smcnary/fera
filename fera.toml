@@ -1,0 +1,16 @@
+[package]
+name = "fera-example"
+version = "0.1.0"
+authors = ["Fera Team"]
+
+[target]
+type = "executable"
+entry = "examples/hello.fera"
+
+[build]
+opt-level = 2
+debug-info = true
+
+[dependencies]
+# Future: package dependencies
+

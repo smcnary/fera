@@ -1,0 +1,35 @@
+[package]
+name = "fera"
+version = "0.1.0"
+edition = "2021"
+authors = ["Fera Language Team"]
+description = "Fera programming language compiler and toolchain"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/fera-lang/fera"
+
+[[bin]]
+name = "fera"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive", "cargo"] }
+anyhow = "1.0"
+thiserror = "1.0"
+inkwell = { version = "0.4", features = ["llvm17-0"] }
+logos = "0.13"
+codespan-reporting = "0.11"
+colored = "2.1"
+toml = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+tempfile = "3.8"
+assert_cmd = "2.0"
+predicates = "3.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
