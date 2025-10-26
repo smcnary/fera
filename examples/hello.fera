@@ -1,0 +1,7 @@
+// hello.fera - Hello World example
+
+export i32 main() {
+    print("Hello, Fera!\n");
+    return 0;
+}
+

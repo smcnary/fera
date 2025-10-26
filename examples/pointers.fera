@@ -1,0 +1,18 @@
+// pointers.fera - Pointer operations
+
+void swap(i32* a, i32* b) {
+    i32 temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+export i32 main() {
+    i32 x = 10;
+    i32 y = 20;
+    
+    swap(&x, &y);
+    
+    // Now x == 20, y == 10
+    return 0;
+}
+
