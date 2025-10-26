@@ -111,6 +111,51 @@ export i32 main() {
 
 See the [`examples/`](examples/) directory for more examples.
 
+### Standard Library Functions
+
+Fera includes a comprehensive standard library with 70+ functions:
+
+**Math Functions:**
+```c
+// Integer math
+i32 abs_i32(i32 x);
+i32 max_i32(i32 a, i32 b);
+i32 min_i32(i32 a, i32 b);
+i32 gcd_i32(i32 a, i32 b);
+
+// Floating point math
+f64 sqrt_f64(f64 x);
+f64 pow_f64(f64 base, f64 exp);
+f64 sin_f64(f64 x);
+f64 cos_f64(f64 x);
+```
+
+**String Functions:**
+```c
+// String operations
+i32 str_cmp(char* s1, char* s2);
+char* str_chr(char* s, char c);
+i32 str_to_i32(char* str);
+
+// Character classification
+i32 is_digit(i32 c);
+i32 is_alpha(i32 c);
+```
+
+**I/O Functions:**
+```c
+// Basic I/O
+void print(char* s);
+void println(char* s);
+
+// Formatted output
+void print_i32(i32 value);
+void print_f64(f64 value);
+void println_i32(i32 value);
+```
+
+See [`stdlib/core/core.h`](stdlib/core/core.h) for the complete list.
+
 ---
 
 ## 🛠️ CLI Commands
@@ -139,7 +184,9 @@ fera build hello.fera --link m         # Link against libm
 
 ## 📚 Documentation
 
+- **[Quick Start](QUICKSTART.md)** - Get started quickly
 - **[Language Spec](FERA_SPEC.md)** - Complete language specification
+- **[Build Status](BUILD_STATUS.md)** - Current build status and recent updates
 - **[Contributing Guide](docs/CONTRIBUTING.md)** - How to contribute
 - **[Roadmap](docs/ROADMAP.md)** - Future plans and milestones
 
@@ -150,12 +197,12 @@ fera build hello.fera --link m         # Link against libm
 Fera is in **early alpha**. The compiler is functional but many features are still being implemented.
 
 **Current Status:**
-- ✅ Lexer and parser
-- ✅ Type system foundation
-- ✅ LLVM IR codegen
-- ✅ Basic CLI tooling
-- ⚠️ Limited stdlib
-- ⚠️ Error reporting (in progress)
+- ✅ Lexer and parser with span tracking
+- ✅ Type system with comprehensive checking
+- ✅ LLVM IR codegen with optimizations
+- ✅ Complete CLI tooling
+- ✅ Extensive stdlib (70+ functions)
+- ✅ Error reporting with helpful messages
 - ❌ Package manager (planned)
 
 See the [Roadmap](docs/ROADMAP.md) for detailed progress.

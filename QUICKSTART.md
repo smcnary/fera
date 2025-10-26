@@ -18,6 +18,9 @@ make build
 
 # Or with cargo
 cargo build --release
+
+# Verify the build (optional)
+./verify_build.sh
 ```
 
 The compiler will be at `target/release/fera`.
