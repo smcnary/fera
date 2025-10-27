@@ -209,6 +209,290 @@ See the [Roadmap](docs/ROADMAP.md) for detailed progress.
 
 ---
 
+## 🗺️ Vision & Roadmap
+
+### Core Language & Toolchain (Tier 0)
+
+**Compiler (fera):**
+- AOT compiler with cross-compilation support
+- Link-time optimization (LTO)
+- Sanitizers (address, thread, UB)
+- Debug info (DWARF/PDB)
+
+**Standard Libraries:**
+- `feracore` - Freestanding: memory, slices, fmt, math
+- `ferastd` - Hosted: fs, net, time, threads
+- `feraintrin` - SIMD, atomics, special registers
+
+**Build System & Package Manager:**
+- `ferabuild` - Project graph, targets, cross profiles
+- `ferapkg` - Package manager with lockfile and semver
+- `ferahub` - Registry (index site + search + docs hosting)
+
+**Developer Experience:**
+- `fera fmt` - Code formatter
+- `fera lint` - Lints and clippy-like hints
+- `fera test` - Unit tests + snapshot tests
+- `fera bench` - Microbenchmark harness
+- `fera-lsp` - Language server (IDE features)
+- `fera dbg` - Debugger (CLI wrapper for lldb/gdb + pretty printers)
+- Profiler - Sampling + perf counters (BPF/RDTSC)
+- Static analyzer - UB, lifetime heuristics, aliasing warnings
+
+### Operating System Platform (Tier 1)
+
+**FeraOS Kernel:**
+- Scheduler, virtual memory, syscalls
+- VFS (Virtual File System)
+- Device drivers
+
+**Userspace Base:**
+- `feraclibc` - C lib shim + POSIX-lite for portability
+- `ferad` - Init system + service manager
+- `fsh` - Shell
+- `ferautils` - Coreutils
+
+**Drivers (Priority):**
+- Serial, console, timer, keyboard
+- AHCI, NVMe
+- e1000e/virtio-net, virtio-blk
+- Framebuffer
+
+**Filesystems:**
+- RAMFS → FAT32 → ext2/3 (read-only first)
+- tarfs for initrd
+
+**Networking:**
+- IPv4, ARP, ICMP, UDP, TCP
+- DHCP client
+- DNS resolver
+
+**Packaging:**
+- `ferapk` - Binary packages, repo metadata, signatures
+
+### Runtimes & Interop (Tier 2)
+
+**FeraCLR:**
+- Interpreter + AOT compilation
+- Minimal class library
+
+**FFI Layers:**
+- Stable C ABI
+- Headers import/export
+- Bindgen-like tool for C → Fera bindings
+
+**WebAssembly:**
+- `fera-wasm` backend for sandboxed plugins
+- WASI support
+
+**Scripting:**
+- FeraScript (config/templating)
+- Lua port
+
+### Frameworks & Libraries (Tier 3)
+
+**Networking:**
+- `feranet` - Async reactor
+- `ferahttp` - HTTP/1.1 server/client
+- WebSocket support
+
+**Storage:**
+- `feradb` - Embedded KV store (LSM-lite)
+- SQLite bindings
+- ORM-style helpers
+
+**Crypto:**
+- `feracrypto` - Hashes, AEAD, TLS v2 roadmap
+
+**Concurrency:**
+- `ferafibers` - Fibers/coroutines with I/O integration
+
+**Graphics/UI (Future):**
+- Framebuffer UI toolkit
+- Font rasterizer
+
+**Observability:**
+- `feralog` - Logging
+- `ferametrics` - Metrics
+- `feratrace` - Tracing (text, JSON, OTLP export)
+
+### DevOps, Distribution & Supply Chain (Tier 4)
+
+**Build Farm & Releases:**
+- Deterministic builds
+- Build cache (S3/minio)
+- Cross-compiled artifacts per triple
+
+**Reproducible Builds:**
+- Pinned toolchains
+- SOURCE_DATE_EPOCH
+- SBOMs (Software Bill of Materials)
+
+**Signing & Security:**
+- `ferasign` - Key management + package signing
+- Provenance attestations
+
+**Container/VM Images:**
+- FeraOS cloud images (QEMU/virt, KVM)
+- PXE boot support
+- Minimal rootfs
+
+**CI/CD:**
+- GitHub/GitLab action templates
+- Pipeline: lint → test → build → sign → publish
+
+**Crash Reporting:**
+- Symbol server
+- Minidump support
+
+### Documentation & Education (Tier 5)
+
+**Documentation Site (docs.fera.dev):**
+- Language book
+- OS handbook
+- API documentation
+
+**Examples Repository:**
+- Sample applications
+- Driver examples
+- Kernel tutorials
+- Networking demos
+
+**Interactive Learning:**
+- Browser REPL (Wasm backend)
+- Shareable code gists
+
+**Guides:**
+- "From C to Fera"
+- "Porting a Driver"
+- "Writing a TCP Server"
+
+---
+
+## 📅 Minimal Viable Roadmap (12-15 Months)
+
+### Phase A — Bootstrap (Months 0-3)
+- ✅ `fera` compiler (x86_64/aarch64) + `feracore`
+- ✅ `fera fmt`, `fera test`
+- FeraOS boots to shell over serial with RAMFS
+- Cooperative task scheduler
+- `ferabuild` can compile multi-crate workspace
+- Seed documentation published
+
+### Phase B — Developer-Usable (Months 4-6)
+- `ferapkg` + Ferahub MVP (index + docs render)
+- `fera-lsp`, basic debugger wrappers
+- Sanitizer integration
+- TCP/UDP stack + HTTP server (`ferahttp`)
+- AHCI/virtio-blk, e1000e/virtio-net drivers
+- ext2 filesystem (read-only)
+- CI pipelines + signed release artifacts
+
+### Phase C — Production Shape (Months 7-10)
+- Preemptive scheduler
+- Per-process virtual memory
+- ELF loader (user mode)
+- POSIX-lite (open/read/write/pipe/fork subset)
+- Observability stack (log/metrics/trace)
+- Package signing + SBOMs
+- Binary repo mirroring
+- FeraCLR interpreter + AOT for plugins
+
+### Phase D — Ecosystem Expansion (Months 11-15)
+- Fibers, async I/O
+- TLS support
+- DNS, HTTP client
+- SQLite bindings, KV store
+- Reproducible builds, cache farm
+- Symbol server
+- Wasm backend (optional)
+- Browser playground
+- "1.0" documentation + stability guarantees
+
+---
+
+## 📦 Repository Organization
+
+```
+org/
+├─ fera               # Compiler + tools
+├─ feracore           # Freestanding core lib
+├─ ferastd            # Hosted std lib
+├─ feraintrin         # Intrinsics/arch shims
+├─ ferabuild          # Build system/driver
+├─ ferapkg            # Package manager
+├─ ferahub            # Registry + site
+├─ fera-lsp           # Language server
+├─ fera-dbg           # Debugger/pretty printers
+├─ ferafmt            # Formatter (if separate)
+├─ feralint           # Linter rules
+├─ feraos             # OS kernel/userspace
+├─ feranet            # Reactor + net stack
+├─ ferahttp           # HTTP server/client
+├─ feracrypto         # Crypto primitives
+├─ feradb             # KV/SQLite bindings
+├─ ferametrics        # Metrics library
+├─ feratrace          # Tracing library
+├─ feraclr            # Common language runtime
+├─ examples           # End-to-end sample apps
+└─ website-docs       # Docs + landing
+```
+
+---
+
+## 🎯 Quality Standards
+
+### Language & Packages
+- ✅ Semver + compatibility policy
+- ✅ Lockfiles, checksums, content-addressable cache
+- ✅ Cross-target dependencies (features, cfg guards)
+- ✅ Build scripts (host tools) with sandboxing
+
+### Tooling Quality
+- ✅ <100ms formatter on typical files
+- ✅ LSP: diagnostics, code actions, go-to-def, rename, format-on-save
+- ✅ Unit tests + golden tests for compiler/OS
+- ✅ Fuzzers on parser, IR passes, net stack
+
+### Security & Supply Chain
+- ✅ Signed releases, reproducible builds, SBOM
+- ✅ Static analysis & sanitizers on CI
+- ✅ Kernel hardening flags, CFI with LTO
+- ✅ Memory init opt-in (-ftrivial-auto-init)
+
+### OS/Userland UX
+- ✅ `ferad` service unit format (TOML/YAML)
+- ✅ Logs to /var/log, journaling option
+- ✅ Coreutils subset (cat, ls, cp, mv, echo, ps, kill)
+- ✅ Networking CLI (ip, ifconfig, route, dns)
+
+---
+
+## 🚀 Starter Verticals
+
+**Web Appliance:**
+- FeraOS + `ferahttp` + file server + metrics dashboard
+
+**Edge/Embedded:**
+- NVMe logger, UDP telemetry, OTA updates via signed packages
+
+**Plugin Host:**
+- Application embedding FeraCLR or Wasm for safe extensions
+
+**Network Services:**
+- DNS responder, syslog collector, NTP client
+
+---
+
+## 🏛️ Governance & Community
+
+- **RFC Process:** Lightweight ADRs for language/OS changes
+- **Stability Guarantees:** Edition model or LTS tags
+- **Contribution Guide:** Code style, commit tags, CLA (if needed)
+- **Bug Bounty:** Especially for kernel/networking
+
+---
+
 ## 🧪 Development
 
 ### Build & Test
